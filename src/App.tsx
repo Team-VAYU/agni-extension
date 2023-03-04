@@ -1,10 +1,10 @@
 import React from 'react'
-import './App.css'
+import classes from './app.module.scss'
 
 function App() {
   return (
-    <div className="App">
-      <p>CHAD!</p>
+    <div className={classes.app}>
+      <p className={classes.text}>CHAD!</p>
     </div>
   )
 }

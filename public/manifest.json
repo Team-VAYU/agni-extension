@@ -7,11 +7,5 @@
     "default_popup": "popup.html",
     "default_title": "AGNI - Advanced Guard for Navigating Internet"
   },
-  "permissions": [
-    "scripting",
-    "contextMenus",
-    "notifications",
-    "storage",
-    "tabs"
-  ]
+  "permissions": ["scripting", "contextMenus", "notifications", "storage", "tabs"]
 }
