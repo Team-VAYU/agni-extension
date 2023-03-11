@@ -1,12 +1,8 @@
-import React from 'react'
-import classes from './app.module.scss'
+import * as React from 'react'
+import {DOMAction} from './types'
 
 function App() {
-  return (
-    <div className={classes.app}>
-      <p className={classes.text}>CHAD!</p>
-    </div>
-  )
+  return <div className="App"></div>
 }
 
 export default App

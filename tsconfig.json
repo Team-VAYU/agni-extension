@@ -16,7 +16,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "noImplicitAny": false,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "types": ["chrome"]
   },
   "include": ["./**/*.ts", "./**/*.tsx"],
   "exclude": ["node_modules", "build", "dist"]

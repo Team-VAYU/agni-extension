@@ -6,6 +6,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = {
   entry: {
     newTab: path.resolve('src/index.tsx'),
+    content: path.resolve('src/scripts/content.ts'),
+    background: path.resolve('src/scripts/background.ts'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -28,15 +30,6 @@ module.exports = {
             },
           },
         },
-        // {
-        //   loader: "babel-loader",
-        //   options: {
-        //     presets: [
-        //       "@babel/preset-env",
-        //       ["@babel/preset-react", { runtime: "automatic" }],
-        //     ],
-        //   },
-        // },
       },
       {
         test: /\.s[ac]ss$/i,
