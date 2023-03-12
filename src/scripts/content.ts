@@ -1,15 +1,15 @@
-import {DOMAction, DOMImagesResponse} from '../types'
+import {DOMAction, DOMImagesResponse, DOMResponse, DOMResponseType} from '../types'
 
 const messagesFromReactAppListener = (
   msg: {type: DOMAction},
   sender: chrome.runtime.MessageSender,
-  sendResponse: (response: DOMImagesResponse) => void,
+  sendResponse: (response: DOMResponseType) => void,
 ) => {
   console.log('[content.js]. Message received', msg)
   const type = msg.type
   switch (type) {
     case DOMAction.GET_DOM:
-      const response: DOMImagesResponse = {
+      const response: DOMResponse = {
         title: DOMAction.GET_DOM,
         video: Array.from(document.querySelectorAll<'video'>('video')).map(video => video.src),
         audio: Array.from(document.querySelectorAll<'audio'>('audio')).map(audio => audio.src),
@@ -18,6 +18,19 @@ const messagesFromReactAppListener = (
       }
       console.log('[content.js]. Message response', response)
       sendResponse(response)
+      break
+    case DOMAction.GET_IMAGES:
+      // Get all images from img tags, div with background image, and video poster
+      const imgs = Array.from(document.querySelectorAll<'img'>('img'))
+      const divImages = Array.from(document.querySelectorAll<'div'>('div')).filter(
+        div => div.style.backgroundImage,
+      )
+      const videoPosters = Array.from(document.querySelectorAll<'video'>('video')).filter(
+        video => video.poster,
+      )
+      const allImages = [imgs, divImages, videoPosters].flat()
+      const res: DOMImagesResponse = {allImages, imgs, divImages, videoPosters}
+
       break
     case DOMAction.BLOCKED_WEBSITE:
       document.body.innerHTML = 'Blocked website'
