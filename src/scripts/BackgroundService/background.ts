@@ -1,5 +1,5 @@
-import {blockedWebsites} from '../data/blockedWebsites'
-import {DOMAction} from '../types'
+import {blockedWebsites} from '../../data/blockedWebsites'
+import {DOMAction} from '../../types'
 console.log('from background service')
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {

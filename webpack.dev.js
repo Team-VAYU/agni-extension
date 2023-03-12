@@ -6,8 +6,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = {
   entry: {
     newTab: path.resolve('src/index.tsx'),
-    content: path.resolve('src/scripts/content.ts'),
-    background: path.resolve('src/scripts/background.ts'),
+    content: path.resolve('src/scripts/ContentService/content.ts'),
+    background: path.resolve('src/scripts/backgroundService/background.ts'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),

@@ -13,10 +13,11 @@ export type DOMResponse = {
 }
 
 export type DOMImagesResponse = {
-  allImages: Array<HTMLImageElement | HTMLDivElement | HTMLVideoElement>
   imgs: HTMLImageElement[]
   divImages: HTMLDivElement[]
   videoPosters: HTMLVideoElement[]
 }
+
+export type ImageContaintingElementType = HTMLImageElement | HTMLDivElement | HTMLVideoElement
 
 export type DOMResponseType = DOMResponse | DOMImagesResponse

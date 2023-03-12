@@ -1,4 +1,5 @@
-import {DOMAction, DOMImagesResponse, DOMResponse, DOMResponseType} from '../types'
+import {DOMAction, DOMImagesResponse, DOMResponse, DOMResponseType} from '../../types'
+import {checkElements} from './Filter/filter'
 
 const messagesFromReactAppListener = (
   msg: {type: DOMAction},
@@ -28,9 +29,9 @@ const messagesFromReactAppListener = (
       const videoPosters = Array.from(document.querySelectorAll<'video'>('video')).filter(
         video => video.poster,
       )
-      const allImages = [imgs, divImages, videoPosters].flat()
-      const res: DOMImagesResponse = {allImages, imgs, divImages, videoPosters}
-
+      const res = {imgs, divImages, videoPosters}
+      console.log('[content.js]. Message response', res)
+      checkElements(res)
       break
     case DOMAction.BLOCKED_WEBSITE:
       document.body.innerHTML = 'Blocked website'
