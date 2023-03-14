@@ -21,3 +21,10 @@ export type DOMImagesResponse = {
 export type ImageContaintingElementType = HTMLImageElement | HTMLDivElement | HTMLVideoElement
 
 export type DOMResponseType = DOMResponse | DOMImagesResponse
+
+export interface SanitiseImagesResponse {
+  imgs: {src: string; element: HTMLImageElement}[]
+  divImages: {src: string; element: HTMLDivElement}[]
+  videoPosters: {src: string; element: HTMLVideoElement}[]
+  allImages: {src: string; element: ImageContaintingElementType}[]
+}

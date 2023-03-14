@@ -1,6 +1,5 @@
 import {blockedWebsites} from '../../data/blockedWebsites'
 import {DOMAction} from '../../types'
-console.log('from background service')
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   if (changeInfo.status === 'complete') {
@@ -14,7 +13,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 })
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log(request)
   if (request.type === DOMAction.GET_IMAGES) {
     console.log('from background service', request)
   }

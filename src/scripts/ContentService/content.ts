@@ -1,12 +1,12 @@
-import {DOMAction, DOMImagesResponse, DOMResponse, DOMResponseType} from '../../types'
+import {DOMAction, DOMResponse, DOMResponseType} from '../../types'
 import {checkElements} from './Filter/filter'
+import {sanitizeImagesResponse} from './Filter/helper'
 
 const messagesFromReactAppListener = (
   msg: {type: DOMAction},
   sender: chrome.runtime.MessageSender,
   sendResponse: (response: DOMResponseType) => void,
 ) => {
-  console.log('[content.js]. Message received', msg)
   const type = msg.type
   switch (type) {
     case DOMAction.GET_DOM:
@@ -17,7 +17,6 @@ const messagesFromReactAppListener = (
         images: Array.from(document.querySelectorAll<'img'>('img')).map(img => img),
         text: Array.from(document.getElementsByTagName<'p'>('p')).map(p => p.innerText),
       }
-      console.log('[content.js]. Message response', response)
       sendResponse(response)
       break
     case DOMAction.GET_IMAGES:
@@ -30,14 +29,14 @@ const messagesFromReactAppListener = (
         video => video.poster,
       )
       const res = {imgs, divImages, videoPosters}
-      console.log('[content.js]. Message response', res)
-      checkElements(res)
+      const sanitizedRes = sanitizeImagesResponse(res)
+
+      checkElements(sanitizedRes)
       break
     case DOMAction.BLOCKED_WEBSITE:
       document.body.innerHTML = 'Blocked website'
       break
     default:
-      console.log('default')
       break
   }
 }
