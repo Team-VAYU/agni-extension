@@ -8,7 +8,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
       chrome.tabs.sendMessage(tabId, {type: DOMAction.BLOCKED_WEBSITE})
       return
     }
-    chrome.tabs.sendMessage(tabId, {type: DOMAction.GET_IMAGES})
+    // chrome.tabs.sendMessage(tabId, {type: DOMAction.GET_IMAGES})
   }
 })
 

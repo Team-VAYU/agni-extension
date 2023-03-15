@@ -1,6 +1,7 @@
 import {DOMAction, DOMResponse, DOMResponseType} from '../../types'
 import {checkElements} from './Filter/filter'
 import {sanitizeImagesResponse} from './Filter/helper'
+import {watchDOM} from './ObserveDOM'
 
 const messagesFromReactAppListener = (
   msg: {type: DOMAction},
@@ -47,3 +48,5 @@ console.log('hello from content script test')
  * Fired when a message is sent from either an extension process or a content script.
  */
 chrome.runtime.onMessage.addListener(messagesFromReactAppListener)
+
+watchDOM()

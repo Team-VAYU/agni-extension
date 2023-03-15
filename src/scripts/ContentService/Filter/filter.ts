@@ -1,6 +1,7 @@
 import {ImageContaintingElementType, SanitiseImagesResponse} from 'types'
 
 const imageMap = new Map()
+const requestAPIMap = new Map()
 
 const hideElement = (element: ImageContaintingElementType, isBlur: boolean) => {
   if (isBlur) element.style.filter = 'blur(30px)'
@@ -32,6 +33,8 @@ const computeImagePredictionScore = async (imageSource: string) => {
 }
 
 export const checkElements = async (imageContainingElements: SanitiseImagesResponse) => {
+  if (imageMap.size === 0) console.log('naya map')
+
   const {allImages} = imageContainingElements
 
   // Hiding all the images first
