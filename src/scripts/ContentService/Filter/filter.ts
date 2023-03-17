@@ -1,6 +1,6 @@
 import {ImageContaintingElementType, SanitiseImagesResponse} from 'types'
 
-const imageMap = new Map()
+const imageSet = new Set()
 const requestAPIMap = new Map()
 
 const hideElement = (element: ImageContaintingElementType, isBlur: boolean) => {
@@ -33,30 +33,26 @@ const computeImagePredictionScore = async (imageSource: string) => {
 }
 
 export const checkElements = async (imageContainingElements: SanitiseImagesResponse) => {
-  if (imageMap.size === 0) console.log('naya map')
+  // console.log('imageContainingElements', imageContainingElements)
+  console.log('imageMap ye raha', imageSet)
 
   const {allImages} = imageContainingElements
-
-  // Hiding all the images first
-  for (const img of allImages) {
-    hideElement(img.element, true)
-  }
+  // console.log('allImages', allImages)
 
   // Computing the score for each image and showing the ones that are safe
   for (const img of allImages) {
     const {src, element} = img
 
-    if (!imageMap.has(src)) {
-      try {
-        const score = await computeImagePredictionScore(src)
-        imageMap.set(src, score)
-      } catch (e) {
-        console.log(e, src, element)
-      }
-    }
-    if (imageMap.has(src)) {
-      const score = imageMap.get(src)
-      if (score < 0.1) showElement(element)
+    if (!imageSet.has(src)) {
+      hideElement(element, true)
+      imageSet.add(src)
+      computeImagePredictionScore(src)
+        .then(score => {
+          if (score < 0.1) showElement(element)
+        })
+        .catch(e => {
+          console.log(e, element)
+        })
     }
   }
 }

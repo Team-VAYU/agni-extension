@@ -23,7 +23,7 @@ const getImageSource = (element: ImageContaintingElementType) => {
 }
 
 export const sanitizeImagesResponse = (res: DOMImagesResponse): SanitiseImagesResponse => {
-  console.log('sanitising', res)
+  // console.log('sanitising', res)
   const resp: SanitiseImagesResponse = {imgs: [], divImages: [], videoPosters: [], allImages: []}
 
   for (const [key, value] of Object.entries(res)) {
