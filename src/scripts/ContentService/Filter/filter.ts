@@ -16,9 +16,9 @@ const url = 'https://octopus-app-dyhid.ondigitalocean.app/'
 
 const computeImagePredictionScore = async (imageSource: string) => {
   try {
-    const res = await fetch('http://localhost:5000/?' + new URLSearchParams({url: imageSource}), {
-      method: 'GET',
-      headers: {Accept: 'application/json'},
+    const res = await fetch('http://localhost:5000/classify', {
+      method: 'POST',
+      body: JSON.stringify({url: imageSource}),
     })
     const data = await res.json()
     if (data.error_code) {
@@ -42,9 +42,6 @@ export const checkElements = async (imageContainingElements: SanitiseImagesRespo
   // Computing the score for each image and showing the ones that are safe
   for (const img of allImages) {
     const {src, element} = img
-
-    // TODO: temporarily disabled to avoid API calls on data:image
-    if (src.startsWith('data:image')) continue
 
     if (!imageMap.has(src)) {
       try {
