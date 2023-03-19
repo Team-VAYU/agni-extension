@@ -4,6 +4,12 @@ export enum DOMAction {
   BLOCKED_WEBSITE = 'BLOCKED_WEBSITE',
 }
 
+export enum MediaType {
+  IMAGE = 'image',
+  VIDEO = 'video',
+  AUDIO = 'audio',
+}
+
 export type DOMResponse = {
   title: string
   images: string[] | any
@@ -19,6 +25,11 @@ export type DOMImagesResponse = {
 }
 
 export type ImageContaintingElementType = HTMLImageElement | HTMLDivElement | HTMLVideoElement
+export type CustomElementType =
+  | HTMLImageElement
+  | HTMLDivElement
+  | HTMLVideoElement
+  | HTMLAudioElement
 
 export type DOMResponseType = DOMResponse | DOMImagesResponse
 
@@ -26,5 +37,15 @@ export interface SanitiseImagesResponse {
   imgs: {src: string; element: HTMLImageElement}[]
   divImages: {src: string; element: HTMLDivElement}[]
   videoPosters: {src: string; element: HTMLVideoElement}[]
-  allImages: {src: string; element: ImageContaintingElementType}[]
+  allImages: {src: string; element: ImageContaintingElementType; type: MediaType.IMAGE}[]
 }
+
+export interface SanitiseVideosResponse {
+  videos: {src: string; element: HTMLVideoElement; type: MediaType.VIDEO}[]
+}
+
+export interface SanitizeAudioResponse {
+  audios: {src: string; element: HTMLAudioElement; type: MediaType.AUDIO}[]
+}
+
+export type SanitizeResponse = SanitiseImagesResponse | SanitiseVideosResponse

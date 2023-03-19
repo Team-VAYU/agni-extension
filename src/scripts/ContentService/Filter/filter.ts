@@ -1,54 +1,77 @@
-import {ImageContaintingElementType, SanitiseImagesResponse} from 'types'
+import {
+  CustomElementType,
+  MediaType,
+  SanitiseImagesResponse,
+  SanitiseVideosResponse,
+  SanitizeAudioResponse,
+} from '../../../types'
 
-const imageSet = new Set()
-const requestAPIMap = new Map()
+const sourceSet = new Set()
 
-const hideElement = (element: ImageContaintingElementType, isBlur: boolean) => {
-  if (isBlur) element.style.filter = 'blur(30px)'
-  else element.style.visibility = 'hidden'
+const hideElement = (element: CustomElementType, isBlur: boolean, type: MediaType) => {
+  if (type === MediaType.IMAGE) {
+    if (isBlur) element.style.filter = 'blur(30px)'
+    else element.style.visibility = 'hidden'
+  } else if (type === MediaType.VIDEO || type === MediaType.AUDIO) {
+    const video = element as HTMLVideoElement
+    video.src = ''
+  }
 }
 
-const showElement = (element: ImageContaintingElementType) => {
+const showElement = (element: CustomElementType) => {
   element.style.visibility = 'visible'
   element.style.filter = 'none'
 }
 
-const url = 'https://octopus-app-dyhid.ondigitalocean.app/'
+// const url = 'https://octopus-app-dyhid.ondigitalocean.app/'
+const url = 'https://graphics-obscenity-dulvw.ondigitalocean.app/classify'
+const localurl = 'http://localhost:5000/classify'
 
-const computeImagePredictionScore = async (imageSource: string) => {
+const computePrediction = async (source: string, isImage: boolean = true) => {
   try {
-    const res = await fetch('http://localhost:5000/classify', {
+    const type = isImage ? 'image' : 'video'
+    const res = await fetch(isImage ? localurl : url, {
       method: 'POST',
-      body: JSON.stringify({url: imageSource}),
+      body: JSON.stringify({url: source, type}),
     })
     const data = await res.json()
     if (data.error_code) {
       throw new Error(data.error_reason)
     } else {
-      return data.score
+      return data
     }
   } catch (e) {
     throw new Error('Something went wrong')
   }
 }
 
-export const checkElements = async (imageContainingElements: SanitiseImagesResponse) => {
+export const checkElements = async (
+  imageContainingElements: SanitiseImagesResponse,
+  videoContainingElements: SanitiseVideosResponse = {videos: []},
+  audioContainingElements: SanitizeAudioResponse = {audios: []},
+) => {
   // console.log('imageContainingElements', imageContainingElements)
-  console.log('imageMap ye raha', imageSet)
+  console.log('sourceSet ye raha', sourceSet)
 
   const {allImages} = imageContainingElements
-  // console.log('allImages', allImages)
+  const {videos} = videoContainingElements
+  const {audios} = audioContainingElements
+  const allElements = [...allImages, ...videos, ...audios]
+  // Computing the score for each image/video and showing the ones that are safe
+  for (const el of allElements) {
+    const {src, element, type} = el
+    const isImage = type === MediaType.IMAGE
+    if (!sourceSet.has(src)) {
+      if (isImage) hideElement(element, true, type)
 
-  // Computing the score for each image and showing the ones that are safe
-  for (const img of allImages) {
-    const {src, element} = img
-
-    if (!imageSet.has(src)) {
-      hideElement(element, true)
-      imageSet.add(src)
-      computeImagePredictionScore(src)
-        .then(score => {
-          if (score < 0.1) showElement(element)
+      sourceSet.add(src)
+      computePrediction(src, isImage)
+        .then(({score, flagged}) => {
+          if (isImage) {
+            if (score < 0.1) showElement(element)
+          } else {
+            if (flagged) hideElement(element, true, type)
+          }
         })
         .catch(e => {
           console.log(e, element)

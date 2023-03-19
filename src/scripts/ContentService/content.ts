@@ -10,33 +10,33 @@ const messagesFromReactAppListener = (
 ) => {
   const type = msg.type
   switch (type) {
-    case DOMAction.GET_DOM:
-      const response: DOMResponse = {
-        title: DOMAction.GET_DOM,
-        video: Array.from(document.querySelectorAll<'video'>('video')).map(video => video.src),
-        audio: Array.from(document.querySelectorAll<'audio'>('audio')).map(audio => audio.src),
-        images: Array.from(document.querySelectorAll<'img'>('img')).map(img => img),
-        text: Array.from(document.getElementsByTagName<'p'>('p')).map(p => p.innerText),
-      }
-      sendResponse(response)
-      break
-    case DOMAction.GET_IMAGES:
-      // Get all images from img tags, div with background image, and video poster
-      const imgs = Array.from(document.querySelectorAll<'img'>('img'))
-      const divImages = Array.from(document.querySelectorAll<'div'>('div')).filter(
-        div => div.style.backgroundImage,
-      )
-      const videoPosters = Array.from(document.querySelectorAll<'video'>('video')).filter(
-        video => video.poster,
-      )
-      const res = {imgs, divImages, videoPosters}
-      const sanitizedRes = sanitizeImagesResponse(res)
+    // case DOMAction.GET_DOM:
+    //   const response: DOMResponse = {
+    //     title: DOMAction.GET_DOM,
+    //     video: Array.from(document.querySelectorAll<'video'>('video')).map(video => video.src),
+    //     audio: Array.from(document.querySelectorAll<'audio'>('audio')).map(audio => audio.src),
+    //     images: Array.from(document.querySelectorAll<'img'>('img')).map(img => img),
+    //     text: Array.from(document.getElementsByTagName<'p'>('p')).map(p => p.innerText),
+    //   }
+    //   sendResponse(response)
+    //   break
+    // case DOMAction.GET_IMAGES:
+    //   // Get all images from img tags, div with background image, and video poster
+    //   const imgs = Array.from(document.querySelectorAll<'img'>('img'))
+    //   const divImages = Array.from(document.querySelectorAll<'div'>('div')).filter(
+    //     div => div.style.backgroundImage,
+    //   )
+    //   const videoPosters = Array.from(document.querySelectorAll<'video'>('video')).filter(
+    //     video => video.poster,
+    //   )
+    //   const res = {imgs, divImages, videoPosters}
+    //   const sanitizedRes = sanitizeImagesResponse(res)
 
-      checkElements(sanitizedRes)
-      break
-    case DOMAction.BLOCKED_WEBSITE:
-      document.body.innerHTML = 'Blocked website'
-      break
+    //   checkElements(sanitizedRes)
+    //   break
+    // case DOMAction.BLOCKED_WEBSITE:
+    //   document.body.innerHTML = 'Blocked website'
+    //   break
     default:
       break
   }
