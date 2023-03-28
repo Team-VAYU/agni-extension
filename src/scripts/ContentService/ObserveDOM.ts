@@ -30,6 +30,7 @@ const domElementsMutation = (element: HTMLElement) => {
   const sanitizedVideosResponse = sanitizeVideosResponse(videos)
   const sanitizedAudioResponse = sanitizeAudioResponse(audios)
   checkElements(sanitizedImageResponse, sanitizedVideosResponse, sanitizedAudioResponse)
+  console.log('dom change')
 }
 
 function callback(mutationsList: MutationRecord[]) {

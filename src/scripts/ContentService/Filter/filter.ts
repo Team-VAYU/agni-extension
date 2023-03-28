@@ -6,6 +6,8 @@ import {
   SanitizeAudioResponse,
 } from '../../../types'
 
+import {urlDomains} from '../../../constants'
+
 const sourceSet = new Set()
 
 const hideElement = (element: CustomElementType, isBlur: boolean, type: MediaType) => {
@@ -27,10 +29,10 @@ const showElement = (element: CustomElementType) => {
 const url = 'https://graphics-obscenity-dulvw.ondigitalocean.app/classify'
 const localurl = 'http://localhost:5000/classify'
 
-const computePrediction = async (source: string, isImage: boolean = true) => {
+const computePrediction = async (source: string, type: MediaType) => {
   try {
-    const type = isImage ? 'image' : 'video'
-    const res = await fetch(isImage ? localurl : url, {
+    const domainUrl = urlDomains[type]
+    const res = await fetch(`${domainUrl}/classify`, {
       method: 'POST',
       body: JSON.stringify({url: source, type}),
     })
@@ -61,11 +63,12 @@ export const checkElements = async (
   for (const el of allElements) {
     const {src, element, type} = el
     const isImage = type === MediaType.IMAGE
+    console.log('upar')
     if (!sourceSet.has(src)) {
       if (isImage) hideElement(element, true, type)
 
       sourceSet.add(src)
-      computePrediction(src, isImage)
+      computePrediction(src, type)
         .then(({score, flagged}) => {
           if (isImage) {
             if (score < 0.1) showElement(element)
@@ -76,6 +79,10 @@ export const checkElements = async (
         .catch(e => {
           console.log(e, element)
         })
+    } else {
+      const score = sourceSet[src]
+      console.log('idhar', score)
+      if (score > 0.1) hideElement(element, true, type)
     }
   }
 }

@@ -18,4 +18,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   }
 })
 
+chrome.runtime.setUninstallURL('http://127.0.0.1:5500/uninstall.html')
+
 export {}

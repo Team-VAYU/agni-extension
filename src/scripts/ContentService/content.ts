@@ -34,9 +34,40 @@ const messagesFromReactAppListener = (
 
     //   checkElements(sanitizedRes)
     //   break
-    // case DOMAction.BLOCKED_WEBSITE:
-    //   document.body.innerHTML = 'Blocked website'
-    //   break
+    case DOMAction.BLOCKED_WEBSITE:
+      // add inner html for blocked website template including css
+      document.body.innerHTML = `
+      <div class="blocked-website">
+        <h1>Blocked Website</h1>
+        <p>Sorry, this website has been blocked by your admin.</p>
+      </div>
+    `
+      const style = document.createElement('style')
+      style.innerHTML = `
+      .blocked-website {
+        display: flex;  
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+        background-color: #f5f5f5;
+      }
+      .blocked-website h1 {
+        font-size: 3rem;
+        font-weight: 500;
+        color: maroon;
+      }
+
+
+      .blocked-website p {
+        font-size: 1.5rem;
+        font-weight: 400;
+        color: #000;
+      }
+    `
+      document.head.appendChild(style)
+      break
     default:
       break
   }
